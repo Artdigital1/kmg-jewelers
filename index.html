@@ -285,15 +285,35 @@
 
     .fp-visual {
       position: relative;
-      aspect-ratio: 1;
       background: var(--black-3);
       border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
     }
-    .fp-gem-icon { font-size: 140px; opacity: 0.13; user-select: none; }
+    .fp-main-img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 1;
+      object-fit: cover;
+      object-position: center;
+      transition: opacity 0.25s;
+    }
+    .fp-thumbs {
+      display: flex;
+      gap: 3px;
+      background: var(--black);
+      padding: 3px;
+    }
+    .fp-thumb {
+      flex: 1;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, opacity 0.2s;
+      opacity: 0.5;
+    }
+    .fp-thumb.active { opacity: 1; border-color: var(--gold); }
+    .fp-thumb:hover { opacity: 0.85; }
+    .fp-thumb img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
     .fp-badge-price {
       position: absolute;
       top: 24px;
@@ -359,7 +379,6 @@
 
     @media (max-width: 820px) {
       .fp-grid { grid-template-columns: 1fr; gap: 48px; }
-      .fp-visual { aspect-ratio: 4/3; }
     }
 
     /* ─── Collections ─── */
@@ -825,11 +844,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- Visual -->
       <div class="fp-visual">
-        <div class="fp-gem-icon">🟢</div>
+        <img id="fpMainImg"
+             class="fp-main-img"
+             src="emerald-1.jpg"
+             alt="12.47ct Colombian Emerald — GIA Certified" />
         <div class="fp-badge-price">$21,500</div>
         <div class="fp-badge-report">
           GIA Report<br>
           <span>#2233813837</span>
+        </div>
+        <div class="fp-thumbs">
+          <div class="fp-thumb active"
+               data-src="emerald-1.jpg"
+               data-alt="12.47ct Colombian Emerald — GIA Certified, view 1">
+            <img src="emerald-1.jpg" alt="Colombian Emerald view 1" />
+          </div>
+          <div class="fp-thumb"
+               data-src="emerald-2.jpg"
+               data-alt="12.47ct Colombian Emerald — GIA Certified, view 2">
+            <img src="emerald-2.jpg" alt="Colombian Emerald view 2" />
+          </div>
         </div>
       </div>
 
@@ -1275,6 +1309,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       submitBtn.textContent = 'Send Inquiry →';
       alert('Connection error. Please call us directly.');
     }
+  });
+})();
+</script>
+
+<!-- ── Product image switcher ── -->
+<script>
+(function () {
+  var mainImg = document.getElementById('fpMainImg');
+  document.querySelectorAll('.fp-thumb').forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      document.querySelectorAll('.fp-thumb').forEach(function (t) { t.classList.remove('active'); });
+      thumb.classList.add('active');
+      mainImg.style.opacity = '0';
+      setTimeout(function () {
+        mainImg.src = thumb.dataset.src;
+        mainImg.alt = thumb.dataset.alt;
+        mainImg.style.opacity = '1';
+      }, 150);
+    });
   });
 })();
 </script>
