@@ -26,10 +26,17 @@
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-5X9DZSFG');</script>
 
-  <!-- Google Fonts -->
+  <!-- Preload LCP image -->
+  <link rel="preload" as="image" href="/emerald-2.jpg" fetchpriority="high" />
+
+  <!-- og:image -->
+  <meta property="og:image" content="https://www.kmgfinejewelers.com/emerald-2.jpg" />
+
+  <!-- Google Fonts — non-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
 
   <style>
     /* ─── Reset ─── */
@@ -400,7 +407,11 @@
       overflow: hidden;
       cursor: default;
       background: var(--black-3);
+      display: block;
+      text-decoration: none;
+      color: inherit;
     }
+    .col-card.linked { cursor: pointer; }
     .col-card.featured { grid-row: span 2; }
     .col-card:not(.featured) { aspect-ratio: 4/3; }
     .col-card.featured { aspect-ratio: unset; min-height: 400px; }
@@ -664,6 +675,7 @@
     }
     .btn-submit:hover { background: var(--gold-light); }
     .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+    .field-error { display: block; color: #c0392b; font-size: 0.82rem; margin-top: 4px; min-height: 1em; }
 
     .form-success {
       display: none;
@@ -741,6 +753,112 @@
       .footer-bottom { flex-direction: column; text-align: center; }
     }
 
+    /* ─── Serving Texas ─── */
+    .serving { background: var(--black); border-top: 1px solid var(--border); }
+    .serving-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+      margin-top: 48px;
+    }
+    .serving-card {
+      display: block;
+      background: var(--black-3);
+      border: 1px solid var(--border);
+      padding: 32px 26px;
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .serving-card:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.04);
+    }
+    .serving-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 10px;
+    }
+    .serving-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+    .serving-card-link {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .serving-card:hover .serving-card-link { opacity: 1; }
+    @media (max-width: 900px) { .serving-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .serving-grid { grid-template-columns: 1fr; } }
+
+    /* ─── Blog Teaser ─── */
+    .blog-teaser { background: var(--black-2); border-top: 1px solid var(--border); }
+    .blog-teaser-header { text-align: center; margin-bottom: 48px; }
+    .blog-teaser-header h2 { font-size: clamp(26px, 3vw, 40px); margin-bottom: 14px; }
+    .blog-teaser-header p { color: var(--gray); font-size: 15px; max-width: 440px; margin: 0 auto; }
+    .blog-teaser-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-bottom: 44px;
+    }
+    .blog-teaser-card {
+      display: block;
+      background: var(--black-3);
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .blog-teaser-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .blog-teaser-cat {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 12px;
+    }
+    .blog-teaser-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--white);
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+    .blog-teaser-card p {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .blog-teaser-link {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .blog-teaser-card:hover .blog-teaser-link { opacity: 1; }
+    .blog-teaser-footer { text-align: center; }
+    @media (max-width: 900px) { .blog-teaser-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .blog-teaser-grid { grid-template-columns: 1fr; } }
+
     /* ─── Animation ─── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(22px); }
@@ -817,6 +935,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li><a href="#about">Our Story</a></li>
         <li><a href="#why-kmg">Why KMG</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="/blog/">Journal</a></li>
       </ul>
       <a href="tel:+19565632006" class="nav-phone">(956) 563-2006</a>
       <a href="#featured-product" class="nav-cta">Shop Now</a>
@@ -887,7 +1006,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="section-header">
       <span class="section-label">Now Available</span>
       <h2>Featured <span class="gold">Gemstone</span></h2>
-      <p>A rare opportunity — one piece, one collector.</p>
+      <p>A rare opportunity. One piece, one collector.</p>
       <span class="gold-rule"></span>
     </div>
     <div class="fp-grid">
@@ -922,7 +1041,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="section-label">Colombian Emerald</span>
         <h2>12.47 Carats</h2>
         <span class="fp-price">$21,500</span>
-        <p class="fp-desc">A rare 12.47-carat Colombian emerald of exceptional vivid green color, certified by GIA. One of nature's finest gems — available now for the serious collector.</p>
+        <p class="fp-desc">A rare 12.47-carat Colombian emerald of exceptional vivid green color, certified by GIA. One of nature's finest gems, available now for the serious collector.</p>
 
         <div class="fp-specs">
           <div class="fp-spec">
@@ -969,6 +1088,77 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- ── Featured Product: Piaget Dancer ── -->
+<section class="featured-product" id="featured-piaget">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Now Available</span>
+      <h2>Featured <span class="gold">Timepiece</span></h2>
+      <p>Swiss craftsmanship, personally verified.</p>
+      <span class="gold-rule"></span>
+    </div>
+    <div class="fp-grid">
+
+      <!-- Visual -->
+      <div class="fp-visual">
+        <img class="fp-main-img"
+             src="front-view.jpeg"
+             alt="Piaget Dancer 80564 K81 — 18K Yellow Gold with Diamond Bezel" />
+        <div class="fp-badge-price">$14,995</div>
+      </div>
+
+      <!-- Details -->
+      <div class="fp-content">
+        <span class="section-label">Piaget Dancer</span>
+        <h2>80564 K81</h2>
+        <span class="fp-price">$14,995</span>
+        <p class="fp-desc">The Piaget Dancer 80564 K81 pairs 18K yellow gold with a factory diamond bezel and a mother-of-pearl dial set with diamond hour markers &mdash; an integrated bracelet design instantly recognized among serious collectors.</p>
+
+        <div class="fp-specs">
+          <div class="fp-spec">
+            <span class="fp-spec-label">Case Metal</span>
+            <span class="fp-spec-val">18K Yellow Gold</span>
+          </div>
+          <div class="fp-spec">
+            <span class="fp-spec-label">Case Size</span>
+            <span class="fp-spec-val">23mm</span>
+          </div>
+          <div class="fp-spec">
+            <span class="fp-spec-label">Movement</span>
+            <span class="fp-spec-val">Piaget Quartz</span>
+          </div>
+          <div class="fp-spec">
+            <span class="fp-spec-label">Dial</span>
+            <span class="fp-spec-val">Mother-of-Pearl</span>
+          </div>
+          <div class="fp-spec">
+            <span class="fp-spec-label">Bezel</span>
+            <span class="fp-spec-val">Factory Diamond</span>
+          </div>
+          <div class="fp-spec">
+            <span class="fp-spec-label">Bracelet</span>
+            <span class="fp-spec-val">Integrated Dancer</span>
+          </div>
+          <div class="fp-spec">
+            <span class="fp-spec-label">Price</span>
+            <span class="fp-spec-val">$14,995</span>
+          </div>
+          <div class="fp-spec">
+            <span class="fp-spec-label">Availability</span>
+            <span class="fp-spec-val" style="color:var(--gold)">Available Now</span>
+          </div>
+        </div>
+
+        <div class="fp-cta-group">
+          <a href="/piaget-dancer-80564-k81" class="btn-primary">Inquire to Purchase &rarr;</a>
+        </div>
+        <p class="fp-note">Full documentation shared upon serious inquiry. Serious inquiries only.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ── Collections ── -->
 <section class="collections" id="collections">
   <div class="container">
@@ -986,19 +1176,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="col-overlay">
           <span class="col-tag">Featured Collection</span>
           <h3 class="col-name">Fine Diamond Jewelry</h3>
-          <p class="col-desc">GIA-certified diamonds — engagement rings, anniversary bands, and statement pieces selected for their fire and brilliance. Ask us about certification details for any specific piece.</p>
+          <p class="col-desc">GIA-certified diamonds: engagement rings, anniversary bands, and statement pieces selected for their fire and brilliance. Ask us about certification details for any specific piece.</p>
         </div>
       </div>
 
       <!-- Watches -->
-      <div class="col-card">
+      <a href="/piaget-dancer-80564-k81" class="col-card linked">
         <div class="col-icon">⌚</div>
         <div class="col-overlay">
           <span class="col-tag">Luxury Timepieces</span>
-          <h3 class="col-name">Designer Watches</h3>
-          <p class="col-desc">Rolex and Swiss timepieces sourced from verified channels.</p>
+          <h3 class="col-name">Piaget Dancer 18K Gold Diamond Watch</h3>
+          <p class="col-desc">18K yellow gold, factory diamond bezel, mother-of-pearl dial. $14,995 &mdash; inquire to view.</p>
         </div>
-      </div>
+      </a>
 
       <!-- Gold & Silver -->
       <div class="col-card">
@@ -1031,7 +1221,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="about-content">
         <span class="section-label">Our Story</span>
         <h2>A Legacy of Craftsmanship,<br>a Future of <span class="gold">Elegance</span></h2>
-        <p>KMG Fine Jewelers was built on a passion that started in childhood — watching a grandfather carefully evaluate every piece that came through his shop. That eye for quality, that respect for the story behind each item, became the foundation of everything we do.</p>
+        <p>KMG Fine Jewelers was built on a passion that started in childhood, watching a grandfather carefully evaluate every piece that came through his shop. That eye for quality, that respect for the story behind each item, became the foundation of everything we do.</p>
         <p>We left behind the high-pressure playbook that plagues so many dealers. At KMG, you'll never feel rushed or oversold. We believe the right piece finds the right person, and our role is simply to make that introduction.</p>
         <div class="about-quote">
           <p>"No hype. No pressure. Just real jewelry, real stories, and real people."</p>
@@ -1054,7 +1244,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="section-header">
       <span class="section-label">Why Choose Us</span>
       <h2>The KMG <span class="gold">Difference</span></h2>
-      <p>We've built our reputation on doing things the right way — for every client, every time.</p>
+      <p>We've built our reputation on doing things the right way, for every client, every time.</p>
       <span class="gold-rule"></span>
     </div>
     <div class="why-grid">
@@ -1093,7 +1283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <line x1="17" y1="28" x2="27" y2="28"/>
         </svg>
         <h3>Custom Craftsmanship</h3>
-        <p>Have a vision? From custom engagement rings to bespoke gold pieces, we bring it to life — every detail handled with precision.</p>
+        <p>Have a vision? From custom engagement rings to bespoke gold pieces, we bring it to life, every detail handled with precision.</p>
       </div>
 
     </div>
@@ -1128,7 +1318,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="t-stars">
           <span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span>
         </div>
-        <p class="t-text">"I came looking for an engagement ring and left with so much more than a piece of jewelry — I left with a story. They helped me find something she'll cherish forever."</p>
+        <p class="t-text">"I came looking for an engagement ring and left with so much more than a piece of jewelry. I left with a story. They helped me find something she'll cherish forever."</p>
         <div class="t-author">
           <div class="t-initials">R</div>
           <div>
@@ -1201,7 +1391,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div>
             <div class="c-label">Location</div>
-            <div class="c-val">McAllen, TX &mdash; Rio Grande Valley</div>
+            <div class="c-val">McAllen, TX · Rio Grande Valley</div>
           </div>
         </div>
       </div>
@@ -1216,11 +1406,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="form-group">
             <label for="fullName">Full Name *</label>
             <input type="text" id="fullName" name="fullName" placeholder="Maria Garcia" required />
+            <span class="field-error" id="fullName-error"></span>
           </div>
 
           <div class="form-group">
             <label for="email">Email Address *</label>
             <input type="email" id="email" name="email" placeholder="maria@email.com" required />
+            <span class="field-error" id="email-error"></span>
           </div>
 
           <div class="form-group">
@@ -1230,7 +1422,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
           <div class="form-group">
             <label for="message">Message</label>
-            <textarea id="message" name="message">I am interested in the Colombian Emerald — 12.47 Carats</textarea>
+            <textarea id="message" name="message">I am interested in the Colombian Emerald, 12.47 Carats</textarea>
+            <span class="field-error" id="message-error"></span>
           </div>
 
           <button type="submit" class="btn-submit" id="submitBtn">Send Inquiry &rarr;</button>
@@ -1243,9 +1436,87 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <polyline points="16,26 23,33 36,19"/>
           </svg>
           <h3>Inquiry Received</h3>
-          <p>Thank you — a member of the KMG team will be in touch within one business day.</p>
+          <p>Thank you. A member of the KMG team will be in touch within one business day.</p>
         </div>
       </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Blog Teaser ── -->
+<section class="blog-teaser">
+  <div class="container">
+    <div class="blog-teaser-header">
+      <span class="section-label">The KMG Journal</span>
+      <h2>Buying Guides &amp; <span class="gold">Expert Advice</span></h2>
+      <p>Everything you need to buy confidently, from diamonds to watches.</p>
+      <span class="gold-rule"></span>
+    </div>
+    <div class="blog-teaser-grid">
+
+      <a href="/blog/gia-diamond-buying-guide/" class="blog-teaser-card">
+        <span class="blog-teaser-cat">Diamond Education</span>
+        <h3>How to Buy a GIA Certified Diamond</h3>
+        <p>What a GIA certificate actually tells you, how to read the 4 Cs, and the grades that matter most when buying.</p>
+        <span class="blog-teaser-link">Read the Guide &rarr;</span>
+      </a>
+
+      <a href="/blog/colombian-emerald-value-guide/" class="blog-teaser-card">
+        <span class="blog-teaser-cat">Emerald Education</span>
+        <h3>What Makes Colombian Emeralds More Valuable?</h3>
+        <p>Why origin drives emerald pricing, the three mining regions, and what to verify before buying a Colombian stone.</p>
+        <span class="blog-teaser-link">Read the Guide &rarr;</span>
+      </a>
+
+      <a href="/blog/engagement-ring-guide-texas/" class="blog-teaser-card">
+        <span class="blog-teaser-cat">Buying Guide</span>
+        <h3>Engagement Ring Buying Guide for Men in Texas</h3>
+        <p>Budget frameworks, metal choices, diamond quality tradeoffs, and how to find her ring size without asking.</p>
+        <span class="blog-teaser-link">Read the Guide &rarr;</span>
+      </a>
+
+    </div>
+    <div class="blog-teaser-footer">
+      <a href="/blog/" class="btn-ghost">View All Articles &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Serving Texas ── -->
+<section class="serving">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Serving Texas</span>
+      <h2>Fine Jewelry Across <span class="gold">the Lone Star State</span></h2>
+      <p>GIA-certified diamonds and luxury pieces available to collectors statewide.</p>
+      <span class="gold-rule"></span>
+    </div>
+    <div class="serving-grid">
+
+      <a href="/fine-jewelry-houston/" class="serving-card">
+        <span class="serving-card-label">Houston, TX</span>
+        <div class="serving-card-title">Fine Jewelry Houston</div>
+        <span class="serving-card-link">View Page &rarr;</span>
+      </a>
+
+      <a href="/fine-jewelry-san-antonio/" class="serving-card">
+        <span class="serving-card-label">San Antonio, TX</span>
+        <div class="serving-card-title">Fine Jewelry San Antonio</div>
+        <span class="serving-card-link">View Page &rarr;</span>
+      </a>
+
+      <a href="/engagement-rings-mcallen-tx/" class="serving-card">
+        <span class="serving-card-label">McAllen, TX</span>
+        <div class="serving-card-title">Engagement Rings McAllen</div>
+        <span class="serving-card-link">View Page &rarr;</span>
+      </a>
+
+      <a href="/diamond-jewelry-rgv/" class="serving-card">
+        <span class="serving-card-label">Rio Grande Valley, TX</span>
+        <div class="serving-card-title">Diamond Jewelry RGV</div>
+        <span class="serving-card-link">View Page &rarr;</span>
+      </a>
 
     </div>
   </div>
@@ -1288,7 +1559,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 KMG Fine Jewelers &mdash; McAllen, TX. All rights reserved.</p>
+      <p>&copy; 2026 KMG Fine Jewelers, McAllen, TX. All rights reserved.</p>
       <div class="footer-badges">
         <span class="f-badge">GIA-Certified Gemstones</span>
         <span class="f-badge">Authenticated Timepieces</span>
@@ -1305,8 +1576,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var submitBtn = document.getElementById('submitBtn');
   var success   = document.getElementById('formSuccess');
 
+  function showError(id, msg) {
+    document.getElementById(id).textContent = msg;
+  }
+
+  function clearError(id) {
+    document.getElementById(id).textContent = '';
+  }
+
+  function validate() {
+    var valid = true;
+    var name    = document.getElementById('fullName').value.trim();
+    var email   = document.getElementById('email').value.trim();
+    var message = document.getElementById('message').value.trim();
+
+    if (name.length < 2) {
+      showError('fullName-error', 'Please enter your full name (at least 2 characters).');
+      valid = false;
+    } else {
+      clearError('fullName-error');
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('email-error', 'Please enter a valid email address.');
+      valid = false;
+    } else {
+      clearError('email-error');
+    }
+
+    if (message.length < 10) {
+      showError('message-error', 'Please enter a message (at least 10 characters).');
+      valid = false;
+    } else {
+      clearError('message-error');
+    }
+
+    return valid;
+  }
+
+  ['fullName', 'email', 'message'].forEach(function (id) {
+    document.getElementById(id).addEventListener('focus', function () {
+      clearError(id + '-error');
+    });
+  });
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
+
+    if (!validate()) return;
 
     submitBtn.disabled    = true;
     submitBtn.textContent = 'Sending…';
