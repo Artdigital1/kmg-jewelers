@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/emerald", "destination": "/emerald.html" }
+    { "source": "/emerald", "destination": "/emerald.html" },
+    { "source": "/piaget-dancer-80564-k81", "destination": "/piaget-dancer-80564-k81.html" }
   ]
 }
