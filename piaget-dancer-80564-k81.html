@@ -460,23 +460,83 @@
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .gallery-item {
+    /* ── Carousel ── */
+    .carousel {
+      position: relative;
       background: var(--black-3);
       border: 1px solid var(--border);
       overflow: hidden;
+      touch-action: pan-y;
     }
-    .gallery-item img { width: 100%; display: block; object-fit: cover; object-position: center; }
-    .gallery-item:not(.wide) img { aspect-ratio: 3/4; }
-    .gallery-item.wide { grid-column: 1 / -1; }
-    .gallery-item.wide img { aspect-ratio: 4/3; }
+    .carousel-track {
+      display: flex;
+      height: clamp(320px, 55vw, 560px);
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .carousel-slide {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      background: rgba(10,10,10,0.75);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      font-size: 22px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      z-index: 2;
+      padding: 0;
+    }
+    .carousel-arrow:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+    .carousel-arrow-prev { left: 16px; }
+    .carousel-arrow-next { right: 16px; }
+    .carousel-dots {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 2;
+    }
+    .carousel-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(245,245,240,0.3);
+      border: 1px solid var(--border);
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .carousel-dot.active { background: var(--gold); transform: scale(1.2); }
 
-    @media (max-width: 700px) {
-      .gallery-grid { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+      .carousel-arrow { width: 36px; height: 36px; font-size: 18px; }
+      .carousel-arrow-prev { left: 10px; }
+      .carousel-arrow-next { right: 10px; }
     }
 
     /* ── Form section ── */
@@ -793,15 +853,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Every <span class="gold">Angle</span></h2>
       <p>A closer look at the craftsmanship of the Piaget Dancer 80564 K81</p>
     </div>
-    <div class="gallery-grid">
-      <div class="gallery-item">
-        <img src="front-view.jpeg" alt="Piaget Dancer 80564 K81 — front view" loading="lazy" />
+    <div class="carousel" id="piagetCarousel" role="region" aria-roledescription="carousel" aria-label="Piaget Dancer image carousel">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide">
+          <img src="front-view.jpeg" alt="Piaget Dancer 80564 K81 — front view" loading="lazy" />
+        </div>
+        <div class="carousel-slide">
+          <img src="side-view.jpeg" alt="Piaget Dancer 80564 K81 — side view" loading="lazy" />
+        </div>
+        <div class="carousel-slide">
+          <img src="bracelet-detail.jpeg" alt="Piaget Dancer 80564 K81 — integrated bracelet detail" loading="lazy" />
+        </div>
       </div>
-      <div class="gallery-item">
-        <img src="side-view.jpeg" alt="Piaget Dancer 80564 K81 — side view" loading="lazy" />
-      </div>
-      <div class="gallery-item wide">
-        <img src="bracelet-detail.jpeg" alt="Piaget Dancer 80564 K81 — integrated bracelet detail" loading="lazy" />
+      <button type="button" class="carousel-arrow carousel-arrow-prev" aria-label="Previous image">&lsaquo;</button>
+      <button type="button" class="carousel-arrow carousel-arrow-next" aria-label="Next image">&rsaquo;</button>
+      <div class="carousel-dots" role="tablist" aria-label="Choose image">
+        <button type="button" class="carousel-dot active" data-index="0" aria-label="Show front view" aria-selected="true"></button>
+        <button type="button" class="carousel-dot" data-index="1" aria-label="Show side view" aria-selected="false"></button>
+        <button type="button" class="carousel-dot" data-index="2" aria-label="Show bracelet detail" aria-selected="false"></button>
       </div>
     </div>
   </div>
@@ -942,6 +1011,71 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       alert('Connection error. Please call us at (956) 563-2006.');
     }
   });
+})();
+</script>
+
+<!-- ── Gallery carousel ── -->
+<script>
+(function () {
+  var carousel = document.getElementById('piagetCarousel');
+  var track    = document.getElementById('carouselTrack');
+  var slides   = carousel.querySelectorAll('.carousel-slide');
+  var dots     = carousel.querySelectorAll('.carousel-dot');
+  var prevBtn  = carousel.querySelector('.carousel-arrow-prev');
+  var nextBtn  = carousel.querySelector('.carousel-arrow-next');
+  var total    = slides.length;
+  var index    = 0;
+  var autoplayTimer = null;
+  var touchStartX   = 0;
+
+  function goTo(i) {
+    index = (i + total) % total;
+    track.style.transform = 'translateX(-' + (index * 100) + '%)';
+    dots.forEach(function (dot, d) {
+      dot.classList.toggle('active', d === index);
+      dot.setAttribute('aria-selected', d === index ? 'true' : 'false');
+    });
+  }
+
+  function next() { goTo(index + 1); }
+  function prev() { goTo(index - 1); }
+
+  function startAutoplay() {
+    stopAutoplay();
+    autoplayTimer = setInterval(next, 5000);
+  }
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  }
+
+  nextBtn.addEventListener('click', function () { next(); startAutoplay(); });
+  prevBtn.addEventListener('click', function () { prev(); startAutoplay(); });
+
+  dots.forEach(function (dot, d) {
+    dot.addEventListener('click', function () { goTo(d); startAutoplay(); });
+  });
+
+  carousel.addEventListener('mouseenter', stopAutoplay);
+  carousel.addEventListener('mouseleave', startAutoplay);
+
+  carousel.addEventListener('touchstart', function (e) {
+    touchStartX = e.changedTouches[0].screenX;
+    stopAutoplay();
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', function (e) {
+    var delta = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(delta) > 40) {
+      if (delta < 0) { next(); } else { prev(); }
+    }
+    startAutoplay();
+  }, { passive: true });
+
+  goTo(0);
+  startAutoplay();
 })();
 </script>
 
